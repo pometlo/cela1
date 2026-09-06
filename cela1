@@ -1,0 +1,418 @@
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "mottl1";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+
+//$sql = "INSERT INTO mottl1 (jmeno, email, recenze) VALUES ('John', 'john@example.com', 'add')";
+if (isset($_POST['submit'])) {
+$jmeno=$_POST['name'];
+$email=$_POST['email'];
+$recenze=$_POST['comment'];
+//pridat datum timestamp default zmenit na current
+
+$sql = "INSERT INTO mottl1 (jmeno, email, recenze) VALUES ('$jmeno', '$email', '$recenze')";
+
+
+
+if ($conn->query($sql) === TRUE) {
+  //echo "New record created successfully";
+header("location: index.php");
+exit();
+} else {
+  echo "Error: " . $sql . "<br>" . $conn->error;
+}
+}
+
+
+
+
+?>
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="1.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <header class="menu">      
+        <div><a href="https://www.instagram.com" target="_blank"><img class="logo"src="obrazky/apple.png" alt=""></a></div>
+
+        <nav class="navigace">
+            <a>O nás</a>
+            <a>Služby</a>
+            <a>Obrázky</a>
+            <a>Menu</a>
+        </nav>
+
+<a href="#" class="btn btn-cta">prihlasit se</a>
+    </header>
+
+    <div class="hero-image">
+  <div class="hero-text">
+    <h1>I am John Doe</h1>
+    <p>And I'm a Photographer</p>
+    <p>And I'm a Photographer</p>
+
+
+    <div class="hero-tlacitka">
+        <button class="btn btn-cta">Hire me</button>
+        <button class="btn btn-ghost">Hire me</button>
+    </div>
+
+
+  </div>
+</div>
+
+<!--https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_image_overlay_fade-->
+<h2>Fade in Overlay</h2>
+<div class="sluzby-container"> 
+
+        <div class="container">
+                <img src="obrazky/apple.png" alt="Avatar" class="image">
+                <div class="overlay">
+                    <div class="text">Hello World</div>
+                </div>
+        </div>
+
+        <div class="container">
+                <img src="obrazky/apple.png" alt="Avatar" class="image">
+                <div class="overlay">
+                    <div class="text">Hello World</div>
+                </div>
+        </div>
+
+        <div class="container">
+                <img src="obrazky/apple.png" alt="Avatar" class="image">
+                <div class="overlay">
+                    <div class="text">Hello World</div>
+                </div>
+        </div>
+
+</div>
+
+<div class="ukazky">
+        <!--https://www.w3schools.com/cssref/tryit.php?filename=trycss_js_background-image-->
+        <h2>Nase ukazky</h2>
+        <div id="myDIV"></div> 
+        <div class="nazvy-sluzeb">
+        <h3 onclick="zmenObrazek('obrazky/pesss.jpeg')">obrazek1</h3>
+        <h3 onclick="zmenObrazek('obrazky/kocak.jpg')">obrazek2</h3>
+        <h3 onclick="zmenObrazek('obrazky/pess.png')">obrazek3</h3>
+        </div>
+</div>
+
+<div class="formular">
+<h2>PHP Form Validation Example</h2>
+<form method="post" action="">  
+  Name: <input type="text" name="name">
+  <br><br>
+  E-mail: <input type="text" name="email">
+  <br><br>
+  Comment: <textarea name="comment" rows="5" cols="40"></textarea>
+  <br><br>
+  <input type="submit" name="submit" value="odeslat">  
+</form>
+</div>
+<?php
+
+//https://www.w3schools.com/php/php_mysql_select.asp
+
+/*$sql = "SELECT id, firstname, lastname FROM MyGuests";
+// Execute the SQL query
+$result = $conn->query($sql);
+
+// Process the result set
+if ($result->num_rows > 0) {
+  // Output data of each row
+  while($row = $result->fetch_assoc()) {
+    echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
+  }
+} else {
+  echo "0 results";
+}
+
+$conn->close();
+*/
+$sql = "SELECT id, jmeno, email, recenze, datum FROM mottl1";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+while($row = $result->fetch_assoc()) {
+echo "id: " . $row["id"]. " - Name: " . $row["jmeno"]. " " . $row["email"]. " " . $row["recenze"]. " ". $row["datum"]. "<br>";
+  }
+} else {
+    echo "0 results";
+}
+
+$conn->close();
+?>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body{
+margin: 0;
+}
+
+.menu{
+    height: 80px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgb(59, 61, 63);
+}
+
+.logo {
+width: 60px;
+height: 60px;
+}
+
+
+
+.navigace{
+display: flex;
+gap: 80px;
+}
+
+.navigace a{
+border-radius: 5px;
+padding: 12px 24px;
+background-color: rgb(63, 35, 35);
+}
+
+
+
+.btn{
+padding: 18px 44px;
+border-radius: 5px;
+text-decoration: none;
+cursor: pointer;
+}
+
+
+.btn-cta{
+background-color: rgb(241, 203, 156);
+color: rgb(0, 1, 2);
+}
+
+
+.btn-ghost{
+  border: 2px solid rgb(241, 203, 156);
+  color: rgb(241, 203, 156);
+    }
+
+
+
+.btn-ghost:hover {
+  background: rgb(241, 203, 156);
+  color: #000000;
+}
+
+
+
+
+
+
+
+
+body, html {
+    height: 100%;
+}
+
+/* The hero image */
+.hero-image {
+  /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../obrazky/kocak.jpg");
+
+  /* Set a specific height */
+  height: 88%;
+
+  /* Position and center the image to scale nicely on all screens */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+/* Place text in the middle of the image */
+.hero-text {
+  text-align: left;
+  position: absolute;
+  top: 50%;
+  left: 17%;
+  transform: translate(-50%, -50%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+h1{
+font-size: 32px;
+
+}
+
+
+.hero-tlacitka{
+display: flex;
+gap: 20px;
+margin-top: 30px;
+
+}
+
+
+.container {
+  position: relative;
+  width: 50%;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 7px;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #35556196;
+}
+
+.container:hover .overlay {
+  opacity: 1;
+}
+
+.text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+
+
+
+.sluzby-container{
+display: flex;
+padding: 50px 50px;
+gap: 20px;
+}
+
+
+
+h2{
+text-align: center;
+}
+
+
+
+#myDIV{
+background-image: url("../obrazky/apple.png");
+height: 200px;
+width: 200px;
+background-size: cover;
+margin: 0px auto;
+}
+
+
+
+
+.ukazky{
+display: flex;
+flex-direction: column;
+padding: 50px 50px;
+width: 50%;
+margin: 0px auto;
+}
+
+
+
+
+.nazvy-sluzeb{
+display: flex;
+justify-content: space-between;
+
+}
+
+
+
+.nazvy-sluzeb h3{
+cursor: pointer;
+
+}
+
+
+
+
+.formular{
+text-align: center;
+
+}
+
+
+
+  
